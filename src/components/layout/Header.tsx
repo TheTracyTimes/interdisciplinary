@@ -39,6 +39,9 @@ export function Header() {
           <Link to="/dashboard">
             <Button variant="ghost" size="sm">Dashboard</Button>
           </Link>
+          <Link to="/shop">
+            <Button variant="ghost" size="sm">Shop</Button>
+          </Link>
           <Link to="/pricing">
             <Button variant="secondary" size="sm">Pricing</Button>
           </Link>

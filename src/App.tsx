@@ -5,6 +5,7 @@ import { Landing } from './pages/Landing'
 import { Dashboard } from './pages/Dashboard'
 import { Project } from './pages/Project'
 import { Pricing } from './pages/Pricing'
+import { Shop } from './pages/Shop'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/project" element={<Project />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/shop" element={<Shop />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
