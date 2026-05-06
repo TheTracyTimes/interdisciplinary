@@ -33,6 +33,7 @@ import { PortfolioPage } from './pages/app/PortfolioPage'
 import { PackagesPage } from './pages/app/PackagesPage'
 import { MessagesPage } from './pages/app/MessagesPage'
 import { BrandPage } from './pages/app/BrandPage'
+import { LogsPage } from './pages/app/LogsPage'
 
 export default function App() {
   return (
@@ -73,6 +74,10 @@ export default function App() {
             <Route path="packages" element={<PackagesPage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="brand" element={<BrandPage />} />
+            <Route path="logs/inventory" element={<LogsPage type="inventory" />} />
+            <Route path="logs/practice" element={<LogsPage type="practice" />} />
+            <Route path="logs/archive" element={<LogsPage type="archive" />} />
+            <Route path="logs/reference" element={<LogsPage type="reference" />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

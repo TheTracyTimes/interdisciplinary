@@ -71,10 +71,18 @@ export function AppSidebar() {
       ],
     },
     {
-      title: 'Library & Logs',
+      title: 'Library',
       items: [
         { label: 'References', path: '/app/references', icon: '◉' },
-        { label: 'Learning Log', path: '/app/learning', icon: '◐' },
+      ],
+    },
+    {
+      title: 'Logs',
+      items: [
+        { label: 'Inventory Log', path: '/app/logs/inventory', icon: '◐' },
+        { label: 'Practice Log', path: '/app/logs/practice', icon: '◐' },
+        { label: 'Archive Log', path: '/app/logs/archive', icon: '◐' },
+        { label: 'Reference Log', path: '/app/logs/reference', icon: '◐' },
       ],
     },
   ]
