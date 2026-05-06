@@ -12,8 +12,11 @@ export function Card({ className, glass, onClick, children }: CardProps) {
     <div
       onClick={onClick}
       className={clsx(
-        'rounded-xl border border-white/10',
-        glass ? 'bg-white/5 backdrop-blur-sm' : 'bg-slate-900/60',
+        'rounded-lg border',
+        glass
+          ? 'bg-white/[0.03] border-white/8 backdrop-blur-sm'
+          : 'bg-[#111113] border-[#1e1e21]',
+        onClick && 'cursor-pointer',
         className,
       )}
     >

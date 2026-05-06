@@ -317,7 +317,156 @@ function InventoryLog() {
   )
 }
 
-function GenericLog({ type }: { type: 'practice' | 'archive' | 'reference' }) {
+interface PracticeEntry {
+  id: string
+  date: string
+  technique: string
+  duration: string
+  recording: string
+  notes: string
+  addedAt: string
+}
+
+const BLANK_PRACTICE: Omit<PracticeEntry, 'id' | 'addedAt'> = {
+  date: new Date().toISOString().slice(0, 10),
+  technique: '',
+  duration: '',
+  recording: '',
+  notes: '',
+}
+
+function PracticeLog() {
+  const storageKey = 'log_practice'
+  const [entries, setEntries] = useState<PracticeEntry[]>(() => {
+    try { return JSON.parse(localStorage.getItem(storageKey) || '[]') } catch { return [] }
+  })
+  const [form, setForm] = useState({ ...BLANK_PRACTICE })
+  const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState('')
+
+  function save(updated: PracticeEntry[]) {
+    setEntries(updated)
+    localStorage.setItem(storageKey, JSON.stringify(updated))
+  }
+
+  function addEntry() {
+    if (!form.technique.trim()) return
+    save([{ ...form, id: Date.now().toString(), addedAt: new Date().toISOString() }, ...entries])
+    setForm({ ...BLANK_PRACTICE })
+    setOpen(false)
+  }
+
+  const filtered = entries.filter(e =>
+    !search ||
+    e.technique.toLowerCase().includes(search.toLowerCase()) ||
+    e.notes.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const field = 'text-xs text-white placeholder-zinc-600 bg-transparent border border-[#2a2a2e] rounded-md px-3 py-2 focus:border-[#6272f3]/40 w-full transition-colors'
+  const lbl = 'text-[10px] font-medium text-zinc-500 uppercase tracking-widest mb-1 block'
+
+  return (
+    <div className="min-h-full p-6 max-w-4xl mx-auto">
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <p className="text-[10px] text-zinc-600 uppercase tracking-widest mb-1">Logs</p>
+          <h1 className="text-xl font-semibold text-white">Practice Log</h1>
+        </div>
+        <button
+          onClick={() => setOpen(o => !o)}
+          className="px-4 py-2 rounded-md bg-[#6272f3] hover:bg-[#7280f5] text-white text-xs font-medium transition-colors"
+        >
+          {open ? 'Cancel' : '+ Log session'}
+        </button>
+      </div>
+
+      {open && (
+        <div className="rounded-lg border border-[#1e1e21] bg-[#111113] p-5 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div>
+              <label className={lbl}>Date</label>
+              <input type="date" className={field} value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} style={{ colorScheme: 'dark' }} />
+            </div>
+            <div className="md:col-span-2">
+              <label className={lbl}>Technique</label>
+              <input className={field} value={form.technique} onChange={e => setForm(f => ({ ...f, technique: e.target.value }))} placeholder="e.g. Scales, chord progressions, camera blocking..." />
+            </div>
+            <div>
+              <label className={lbl}>Duration</label>
+              <input className={field} value={form.duration} onChange={e => setForm(f => ({ ...f, duration: e.target.value }))} placeholder="e.g. 45 min" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className={lbl}>Recording</label>
+              <input className={field} value={form.recording} onChange={e => setForm(f => ({ ...f, recording: e.target.value }))} placeholder="File name, link, or note about recording" />
+            </div>
+            <div>
+              <label className={lbl}>Notes</label>
+              <input className={field} value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="What went well, what to work on..." />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button
+              onClick={addEntry}
+              disabled={!form.technique.trim()}
+              className="px-5 py-2 rounded-md bg-[#6272f3] hover:bg-[#7280f5] text-white text-xs font-medium disabled:opacity-30 transition-colors"
+            >
+              Save session
+            </button>
+          </div>
+        </div>
+      )}
+
+      {entries.length > 0 && (
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search sessions..."
+          className="w-full text-xs text-white placeholder-zinc-600 border border-[#1e1e21] rounded-md px-4 py-2 bg-[#111113] focus:border-[#2a2a2e] mb-4 transition-colors"
+        />
+      )}
+
+      {filtered.length === 0 ? (
+        <div className="text-center py-20">
+          <p className="text-zinc-600 text-sm">{search ? 'No sessions match.' : 'No sessions logged yet.'}</p>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-[#1e1e21] overflow-hidden">
+          <div className="grid text-[10px] font-medium text-zinc-600 uppercase tracking-widest px-4 py-2.5 border-b border-[#1e1e21] bg-[#0e0e10]"
+            style={{ gridTemplateColumns: '100px 1fr 80px 1fr 1fr' }}>
+            <span>Date</span>
+            <span>Technique</span>
+            <span>Duration</span>
+            <span>Recording</span>
+            <span>Notes</span>
+          </div>
+          {filtered.map((entry, idx) => (
+            <div
+              key={entry.id}
+              className="group grid items-center px-4 py-3 gap-3 text-xs border-b border-[#1a1a1d] last:border-0"
+              style={{ gridTemplateColumns: '100px 1fr 80px 1fr 1fr', background: idx % 2 === 0 ? '#111113' : '#0f0f11' }}
+            >
+              <span className="text-zinc-500 font-mono text-[10px]">
+                {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' })}
+              </span>
+              <span className="text-zinc-200 font-medium truncate">{entry.technique}</span>
+              <span className="text-zinc-400 font-mono">{entry.duration || '—'}</span>
+              <span className="text-zinc-500 truncate">{entry.recording || '—'}</span>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-zinc-600 truncate">{entry.notes || '—'}</span>
+                <button onClick={() => save(entries.filter(e => e.id !== entry.id))}
+                  className="text-zinc-700 hover:text-zinc-400 opacity-0 group-hover:opacity-100 shrink-0 transition-all">✕</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function GenericLog({ type }: { type: 'archive' | 'reference' }) {
   const config = CONFIG[type]
   const storageKey = `log_${type}`
 
@@ -427,5 +576,6 @@ function GenericLog({ type }: { type: 'practice' | 'archive' | 'reference' }) {
 
 export function LogsPage({ type }: { type: LogType }) {
   if (type === 'inventory') return <InventoryLog />
+  if (type === 'practice') return <PracticeLog />
   return <GenericLog type={type} />
 }

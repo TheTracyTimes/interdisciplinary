@@ -11,16 +11,16 @@ interface BadgeProps {
 }
 
 const VARIANT: Record<Variant, string> = {
-  neutral: 'bg-white/10 text-slate-300 border border-white/15',
-  film:    'bg-film-500/20 text-red-300 border border-film-500/30',
-  music:   'bg-music-500/20 text-emerald-300 border border-music-500/30',
-  creator: 'bg-brand-500/20 text-brand-300 border border-brand-500/30',
-  pro:     'bg-violet-500/20 text-violet-300 border border-violet-500/30',
-  free:    'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+  neutral: 'bg-white/5 text-zinc-400 border border-white/8',
+  film:    'bg-white/5 text-zinc-300 border border-white/8',
+  music:   'bg-white/5 text-zinc-300 border border-white/8',
+  creator: 'bg-white/5 text-zinc-300 border border-white/8',
+  pro:     'bg-white/5 text-zinc-300 border border-white/8',
+  free:    'bg-white/5 text-zinc-400 border border-white/8',
 }
 
 const SIZE: Record<Size, string> = {
-  xs: 'px-1.5 py-0.5 text-xs',
+  xs: 'px-1.5 py-0.5 text-[10px]',
   sm: 'px-2 py-0.5 text-xs',
   md: 'px-2.5 py-1 text-sm',
 }
@@ -29,7 +29,7 @@ export function Badge({ variant = 'neutral', size = 'md', className, children }:
   return (
     <span
       className={clsx(
-        'inline-flex items-center rounded-full font-medium',
+        'inline-flex items-center rounded font-medium tracking-wide',
         VARIANT[variant],
         SIZE[size],
         className,
