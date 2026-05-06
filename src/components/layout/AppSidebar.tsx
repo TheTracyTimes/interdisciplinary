@@ -68,6 +68,7 @@ export function AppSidebar() {
         { label: 'Packages', path: '/app/packages', icon: '$' },
         { label: 'Messages', path: '/app/messages', icon: '✉', badge: unreadMessages || undefined },
         { label: 'Forum', path: '/app/forum', icon: '⊞' },
+        { label: 'Resell Market', path: '/resell', icon: '◇' },
       ],
     },
     {

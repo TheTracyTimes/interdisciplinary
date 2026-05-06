@@ -34,6 +34,7 @@ import { PackagesPage } from './pages/app/PackagesPage'
 import { MessagesPage } from './pages/app/MessagesPage'
 import { BrandPage } from './pages/app/BrandPage'
 import { LogsPage } from './pages/app/LogsPage'
+import { ResellMarket } from './pages/ResellMarket'
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/community" element={<Community />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="/resell" element={<ResellMarket />} />
           <Route path="/client" element={<ClientEntry />} />
           <Route path="/p/:handle" element={<ProducerPublicPage />} />
           <Route path="/portal/:token" element={<PortalPage />} />

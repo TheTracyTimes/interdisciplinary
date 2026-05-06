@@ -12,7 +12,7 @@ const CONFIG: Record<LogType, { title: string; accent: string; placeholder: stri
 const CONDITIONS = ['New', 'Like New', 'Good', 'Fair', 'Poor']
 const CATEGORIES = ['Camera', 'Lens', 'Audio', 'Lighting', 'Computer', 'Plugin', 'Instrument', 'Controller', 'Storage', 'Accessory', 'Other']
 
-interface InventoryEntry {
+export interface InventoryEntry {
   id: string
   name: string
   manufacturer: string
@@ -25,6 +25,9 @@ interface InventoryEntry {
   serialKey: string
   type: 'Software' | 'Hardware' | ''
   addedAt: string
+  forSale?: boolean
+  askingPrice?: string
+  listingNote?: string
 }
 
 interface LogEntry {
@@ -194,7 +197,7 @@ function InventoryLog() {
           {/* Table header */}
           <div
             className="grid text-[10px] font-mono text-slate-600 uppercase tracking-widest px-4 py-2 border-b border-white/6"
-            style={{ background: '#0e0e10', gridTemplateColumns: '1fr 1fr 80px 80px 60px 80px 80px 80px' }}
+            style={{ background: '#0e0e10', gridTemplateColumns: '1fr 1fr 80px 80px 60px 80px 80px 90px 96px' }}
           >
             <span>Name</span>
             <span>Manufacturer</span>
@@ -204,6 +207,7 @@ function InventoryLog() {
             <span>Price</span>
             <span>Condition</span>
             <span>Acquired</span>
+            <span>For Sale</span>
           </div>
           {filtered.map((entry, idx) => (
             <div
@@ -213,7 +217,7 @@ function InventoryLog() {
             >
               <div
                 className="grid items-center px-4 py-3 gap-2 text-xs"
-                style={{ gridTemplateColumns: '1fr 1fr 80px 80px 60px 80px 80px 80px' }}
+                style={{ gridTemplateColumns: '1fr 1fr 80px 80px 60px 80px 80px 90px 96px' }}
               >
                 <div className="min-w-0">
                   <p className="text-white font-medium truncate">{entry.name}</p>
@@ -261,9 +265,49 @@ function InventoryLog() {
                     ✕
                   </button>
                 </div>
+                {/* For Sale toggle */}
+                <div className="flex flex-col gap-1">
+                  <button
+                    onClick={() => {
+                      const updated = entries.map(e => e.id === entry.id ? { ...e, forSale: !e.forSale } : e)
+                      save(updated)
+                    }}
+                    className="text-[9px] font-semibold px-2 py-0.5 rounded border transition-colors w-fit"
+                    style={entry.forSale
+                      ? { background: 'rgba(245,158,11,0.15)', borderColor: 'rgba(245,158,11,0.3)', color: '#f59e0b' }
+                      : { background: 'transparent', borderColor: 'rgba(255,255,255,0.1)', color: '#475569' }
+                    }
+                  >
+                    {entry.forSale ? 'Listed' : 'List'}
+                  </button>
+                  {entry.forSale && (
+                    <input
+                      value={entry.askingPrice || ''}
+                      onChange={e => {
+                        const updated = entries.map(en => en.id === entry.id ? { ...en, askingPrice: e.target.value } : en)
+                        save(updated)
+                      }}
+                      placeholder="Ask $"
+                      className="text-[10px] font-mono text-white placeholder-slate-600 bg-transparent border border-white/10 rounded px-1.5 py-0.5 focus:outline-none w-full"
+                    />
+                  )}
+                </div>
               </div>
               {entry.purchasedAt && (
                 <p className="px-4 pb-2 text-[10px] text-slate-600 font-mono -mt-1">Purchased at: {entry.purchasedAt}</p>
+              )}
+              {entry.forSale && (
+                <div className="px-4 pb-2 -mt-1">
+                  <input
+                    value={entry.listingNote || ''}
+                    onChange={e => {
+                      const updated = entries.map(en => en.id === entry.id ? { ...en, listingNote: e.target.value } : en)
+                      save(updated)
+                    }}
+                    placeholder="Listing note (optional — shown on resell market)"
+                    className="text-[10px] text-slate-400 placeholder-slate-600 bg-transparent border border-white/8 rounded px-2 py-1 focus:outline-none w-full"
+                  />
+                </div>
               )}
             </div>
           ))}
