@@ -30,11 +30,35 @@ export function Community() {
   const [commentText, setCommentText] = useState('')
   const [commentAuthor, setCommentAuthor] = useState('')
 
-  const posts = state.feedPosts
-    .filter(p => p.isPublished)
+  const archivePublic = (() => {
+    try {
+      const all = JSON.parse(localStorage.getItem('log_archive') || '[]')
+      return all.filter((e: any) => e.visibility === 'public').map((e: any) => ({
+        id: 'archive_' + e.id,
+        type: 'Portfolio' as FeedPostType,
+        category: e.type === 'Film' ? 'Film' : e.type === 'Music' ? 'Music' : 'Other',
+        title: e.title,
+        body: [e.genre, e.duration, e.tools].filter(Boolean).join(' · ') + (e.notes ? `\n${e.notes}` : ''),
+        isPublished: true,
+        clientApproved: true,
+        createdAt: e.addedAt,
+        likes: 0,
+        comments: [],
+        _isArchive: true,
+        _link: e.link,
+        _completedDate: e.completedDate,
+        _discipline: e.type,
+      }))
+    } catch { return [] }
+  })()
+
+  const posts = [
+    ...state.feedPosts.filter(p => p.isPublished),
+    ...archivePublic,
+  ]
     .filter(p => catFilter === 'All' || p.category === catFilter)
     .filter(p => typeFilter === 'All' || p.type === typeFilter)
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .sort((a: any, b: any) => b.createdAt.localeCompare(a.createdAt))
 
   const profile = state.producerProfile
 
@@ -105,17 +129,25 @@ export function Community() {
           </div>
         ) : (
           <div className="space-y-4">
-            {posts.map((post: FeedPost) => (
+            {posts.map((post: any) => (
               <article
                 key={post.id}
-                className="rounded-2xl border border-white/8 overflow-hidden"
+                className="rounded border border-[#1e1e21] overflow-hidden"
                 style={{ background: '#111113' }}
               >
+                {/* Archive post marker */}
+                {post._isArchive && (
+                  <div className="h-0.5" style={{
+                    background: post._discipline === 'Film' ? '#06b6d4'
+                      : post._discipline === 'Music' ? '#6272f3'
+                      : '#48bb9a'
+                  }} />
+                )}
                 {/* Post header */}
                 <div className="px-5 pt-4 pb-3 flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-black text-white shrink-0"
+                      className="w-8 h-8 rounded flex items-center justify-center text-sm font-black text-white shrink-0"
                       style={{ background: profile.avatarColor || '#6272f3' }}
                     >
                       {(profile.displayName || 'P').charAt(0).toUpperCase()}
@@ -124,13 +156,22 @@ export function Community() {
                       <p className="text-xs font-semibold text-white">{profile.displayName || 'Producer'}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span
-                          className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider"
-                          style={{ background: TYPE_COLOR[post.type] + '25', color: TYPE_COLOR[post.type] }}
+                          className="text-[9px] font-medium px-1.5 py-0.5 rounded uppercase tracking-wider bg-white/5 border border-white/8 text-zinc-400"
                         >
-                          {post.type}
+                          {post._isArchive ? 'Archived Project' : post.type}
                         </span>
-                        <span className="text-[10px] text-slate-600">{timeAgo(post.createdAt)}</span>
-                        {post.clientApproved && (
+                        {post._discipline && (
+                          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded"
+                            style={post._discipline === 'Film'
+                              ? { background: 'rgba(6,182,212,0.1)', color: '#06b6d4' }
+                              : post._discipline === 'Music'
+                              ? { background: 'rgba(98,114,243,0.1)', color: '#6272f3' }
+                              : { background: 'rgba(72,187,154,0.1)', color: '#48bb9a' }
+                            }
+                          >{post._discipline}</span>
+                        )}
+                        <span className="text-[10px] text-zinc-600">{timeAgo(post.createdAt)}</span>
+                        {!post._isArchive && post.clientApproved && (
                           <span className="text-[9px] text-emerald-400">✓ Client approved</span>
                         )}
                       </div>
@@ -145,8 +186,20 @@ export function Community() {
 
                 {/* Content */}
                 <div className="px-5 pb-3">
-                  <h3 className="text-sm font-bold text-white mb-1.5">{post.title}</h3>
-                  {post.body && <p className="text-xs text-slate-400 leading-relaxed">{post.body}</p>}
+                  <h3 className="text-sm font-semibold text-white mb-1.5">{post.title}</h3>
+                  {post.body && <p className="text-xs text-zinc-400 leading-relaxed whitespace-pre-wrap">{post.body}</p>}
+                  {post._isArchive && post._link && (
+                    <a href={post._link} target="_blank" rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 mt-2 text-[10px] text-[#6272f3] hover:underline font-mono"
+                    >
+                      View project →
+                    </a>
+                  )}
+                  {post._isArchive && post._completedDate && (
+                    <p className="text-[10px] text-zinc-600 font-mono mt-1">
+                      Completed {new Date(post._completedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </p>
+                  )}
                 </div>
 
                 {/* Media */}
