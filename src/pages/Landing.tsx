@@ -245,14 +245,16 @@ export function Landing() {
             Open Beta — Free to start
           </div>
 
-          <h1 className="text-5xl sm:text-7xl font-black tracking-tight leading-[1.0] mb-6">
-            Where the speed of sound,
-            <br />
-            <span style={{
-              background: 'linear-gradient(135deg, #6272f3 0%, #a78bfa 50%, #06b6d4 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}>
+          <h1 className="text-5xl sm:text-7xl font-black tracking-tight leading-[1.1] mb-6">
+            <span className="block">Where the speed of sound,</span>
+            <span
+              className="block"
+              style={{
+                background: 'linear-gradient(135deg, #6272f3 0%, #a78bfa 50%, #06b6d4 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
               meets the speed of light.
             </span>
           </h1>
