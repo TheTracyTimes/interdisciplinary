@@ -71,10 +71,10 @@ const TOOLS = [
     desc: 'Visualize every shot before you pick up a camera. Panel-by-panel, shot-logged, and shareable with your crew.',
   },
   {
-    label: 'Arrangement Mapper',
-    tag: 'Music',
-    color: '#6272f3',
-    desc: 'Map your picture visually before entering the studio. Lock your keys, vibe, and tempo. Chorus first.',
+    label: '6-Stage Pipeline',
+    tag: 'Both',
+    color: '#48bb9a',
+    desc: 'From idea to distribution — a guided workflow that teaches you what the industry knows, independently.',
   },
   {
     label: 'Score Writer',
@@ -83,10 +83,10 @@ const TOOLS = [
     desc: 'Compose for picture or standalone. Notate by measure and export as standard music notation.',
   },
   {
-    label: '6-Stage Pipeline',
-    tag: 'Both',
-    color: '#48bb9a',
-    desc: 'From idea to distribution — a guided workflow that teaches you what the industry knows, independently.',
+    label: 'Arrangement Mapper',
+    tag: 'Music',
+    color: '#6272f3',
+    desc: 'Map your picture visually before entering the studio. Lock your keys, vibe, and tempo. Chorus first.',
   },
   {
     label: 'Cross-Discipline Projects',
