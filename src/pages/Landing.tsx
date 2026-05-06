@@ -368,48 +368,7 @@ export function Landing() {
         <div className="max-w-6xl mx-auto">
           <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mb-2">Toolset</p>
           <h2 className="text-3xl font-bold text-white mb-3">Everything in one workspace</h2>
-          <p className="text-sm text-slate-500 mb-8">Stop context-switching between tools that don't talk to each other.</p>
-
-          {/* Creative Tools 2×3 grid */}
-          <div className="rounded-xl overflow-hidden border border-white/8 mb-10 max-w-2xl" style={{ background: '#0e0e10' }}>
-            <div className="grid grid-cols-3">
-              {[
-                { label: 'Script writer', path: '/app/script' },
-                { label: 'Storyboarding', path: '/app/storyboard' },
-                { label: '6-stage pipeline', path: '/app/film' },
-              ].map((item, i) => (
-                <Link
-                  key={item.path}
-                  to="/app"
-                  className={`flex items-center justify-center px-3 py-4 text-center text-xs font-mono text-slate-400 hover:text-white hover:bg-white/5 transition-colors${i < 2 ? ' border-r border-white/6' : ''}`}
-                  style={{ borderTop: '2px solid rgba(6,182,212,0.3)' }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-            <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
-            <div className="grid grid-cols-3">
-              {[
-                { label: 'Score writer', path: '/app/score' },
-                { label: 'Arrangement mapping', path: '/app/arrangement' },
-                { label: 'Cross-discipline', path: '/app/projects' },
-              ].map((item, i) => (
-                <Link
-                  key={item.path}
-                  to="/app"
-                  className={`flex items-center justify-center px-3 py-4 text-center text-xs font-mono text-slate-400 hover:text-white hover:bg-white/5 transition-colors${i < 2 ? ' border-r border-white/6' : ''}`}
-                  style={{ borderBottom: '2px solid rgba(98,114,243,0.3)' }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="flex gap-6 mb-10 -mt-7">
-            <span className="text-[9px] font-mono uppercase tracking-widest" style={{ color: '#06b6d490' }}>Film / NLE</span>
-            <span className="text-[9px] font-mono uppercase tracking-widest" style={{ color: '#6272f390' }}>Music / DAW</span>
-          </div>
+          <p className="text-sm text-slate-500 mb-10">Stop context-switching between tools that don't talk to each other.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'rgba(255,255,255,0.06)', borderRadius: 8, overflow: 'hidden' }}>
             {TOOLS.map(tool => (
