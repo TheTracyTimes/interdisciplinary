@@ -469,7 +469,7 @@ function PracticeLog() {
 interface ArchiveEntry {
   id: string
   title: string
-  type: 'Film' | 'Music' | 'Both' | ''
+  type: 'Film' | 'Music' | 'Photography' | 'Design' | 'Animation' | 'Writing' | 'Podcast' | 'Commercial' | 'Theatre' | 'Cross-Discipline' | ''
   genre: string
   client: string
   completedDate: string
@@ -521,9 +521,16 @@ function ArchiveLog() {
   const lbl = 'text-[10px] font-medium text-zinc-500 uppercase tracking-widest mb-1 block'
 
   const TYPE_COLOR: Record<string, { bg: string; color: string }> = {
-    Film:  { bg: 'rgba(6,182,212,0.12)',  color: '#06b6d4' },
-    Music: { bg: 'rgba(98,114,243,0.12)', color: '#6272f3' },
-    Both:  { bg: 'rgba(72,187,154,0.12)', color: '#48bb9a' },
+    Film:             { bg: 'rgba(6,182,212,0.12)',   color: '#06b6d4' },
+    Music:            { bg: 'rgba(98,114,243,0.12)',  color: '#6272f3' },
+    Photography:      { bg: 'rgba(245,158,11,0.12)',  color: '#f59e0b' },
+    Design:           { bg: 'rgba(168,85,247,0.12)',  color: '#a855f7' },
+    Animation:        { bg: 'rgba(232,93,74,0.12)',   color: '#e85d4a' },
+    Writing:          { bg: 'rgba(148,163,184,0.12)', color: '#94a3b8' },
+    Podcast:          { bg: 'rgba(139,92,246,0.12)',  color: '#8b5cf6' },
+    Commercial:       { bg: 'rgba(249,115,22,0.12)',  color: '#f97316' },
+    Theatre:          { bg: 'rgba(236,72,153,0.12)',  color: '#ec4899' },
+    'Cross-Discipline': { bg: 'rgba(72,187,154,0.12)', color: '#48bb9a' },
   }
 
   return (
@@ -581,12 +588,12 @@ function ArchiveLog() {
 
           <div className="mb-5">
             <label className={lbl}>Discipline</label>
-            <div className="flex gap-2">
-              {(['Film', 'Music', 'Both'] as const).map(t => (
+            <div className="flex flex-wrap gap-1.5">
+              {(['Film', 'Music', 'Photography', 'Design', 'Animation', 'Writing', 'Podcast', 'Commercial', 'Theatre', 'Cross-Discipline'] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => setForm(f => ({ ...f, type: t }))}
-                  className="px-4 py-1.5 rounded text-xs font-medium border transition-colors"
+                  className="px-3 py-1 rounded text-xs font-medium border transition-colors"
                   style={form.type === t
                     ? { ...TYPE_COLOR[t], borderColor: TYPE_COLOR[t].color + '40' }
                     : { background: 'transparent', borderColor: '#2a2a2e', color: '#52525b' }

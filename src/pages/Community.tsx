@@ -4,6 +4,19 @@ import clsx from 'clsx'
 import { useApp } from '../context/AppContext'
 import type { FeedPost, FeedPostType } from '../types'
 
+const DISCIPLINE_COLOR: Record<string, string> = {
+  Film:             '#06b6d4',
+  Music:            '#6272f3',
+  Photography:      '#f59e0b',
+  Design:           '#a855f7',
+  Animation:        '#e85d4a',
+  Writing:          '#94a3b8',
+  Podcast:          '#8b5cf6',
+  Commercial:       '#f97316',
+  Theatre:          '#ec4899',
+  'Cross-Discipline': '#48bb9a',
+}
+
 const TYPE_COLOR: Record<FeedPostType, string> = {
   Portfolio: '#6272f3',
   Victory: '#f59e0b',
@@ -36,7 +49,7 @@ export function Community() {
       return all.filter((e: any) => e.visibility === 'public').map((e: any) => ({
         id: 'archive_' + e.id,
         type: 'Portfolio' as FeedPostType,
-        category: e.type === 'Film' ? 'Film' : e.type === 'Music' ? 'Music' : 'Other',
+        category: ['Film', 'Music'].includes(e.type) ? e.type : 'Other',
         title: e.title,
         body: [e.genre, e.duration, e.tools].filter(Boolean).join(' · ') + (e.notes ? `\n${e.notes}` : ''),
         isPublished: true,
@@ -137,11 +150,7 @@ export function Community() {
               >
                 {/* Archive post marker */}
                 {post._isArchive && (
-                  <div className="h-0.5" style={{
-                    background: post._discipline === 'Film' ? '#06b6d4'
-                      : post._discipline === 'Music' ? '#6272f3'
-                      : '#48bb9a'
-                  }} />
+                  <div className="h-0.5" style={{ background: DISCIPLINE_COLOR[post._discipline] ?? '#48bb9a' }} />
                 )}
                 {/* Post header */}
                 <div className="px-5 pt-4 pb-3 flex items-start justify-between">
@@ -161,13 +170,9 @@ export function Community() {
                           {post._isArchive ? 'Archived Project' : post.type}
                         </span>
                         {post._discipline && (
-                          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded"
-                            style={post._discipline === 'Film'
-                              ? { background: 'rgba(6,182,212,0.1)', color: '#06b6d4' }
-                              : post._discipline === 'Music'
-                              ? { background: 'rgba(98,114,243,0.1)', color: '#6272f3' }
-                              : { background: 'rgba(72,187,154,0.1)', color: '#48bb9a' }
-                            }
+                          <span
+                            className="text-[9px] font-medium px-1.5 py-0.5 rounded"
+                            style={{ background: DISCIPLINE_COLOR[post._discipline] + '18', color: DISCIPLINE_COLOR[post._discipline] ?? '#48bb9a' }}
                           >{post._discipline}</span>
                         )}
                         <span className="text-[10px] text-zinc-600">{timeAgo(post.createdAt)}</span>
