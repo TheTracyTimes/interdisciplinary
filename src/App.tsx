@@ -34,6 +34,7 @@ import { PackagesPage } from './pages/app/PackagesPage'
 import { MessagesPage } from './pages/app/MessagesPage'
 import { BrandPage } from './pages/app/BrandPage'
 import { LogsPage } from './pages/app/LogsPage'
+import { StoragePage } from './pages/app/StoragePage'
 import { ResellMarket } from './pages/ResellMarket'
 
 export default function App() {
@@ -76,6 +77,7 @@ export default function App() {
             <Route path="packages" element={<PackagesPage />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="brand" element={<BrandPage />} />
+            <Route path="storage" element={<StoragePage />} />
             <Route path="logs/inventory" element={<LogsPage type="inventory" />} />
             <Route path="logs/practice" element={<LogsPage type="practice" />} />
             <Route path="logs/archive" element={<LogsPage type="archive" />} />

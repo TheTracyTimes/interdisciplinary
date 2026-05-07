@@ -1,6 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { useApp } from '../../context/AppContext'
+
+const TIER_STORAGE: Record<string, number> = { free: 5, pro: 100, studio: 1000 }
+const TIER_COLOR: Record<string, string> = { free: '#52525b', pro: '#6272f3', studio: '#06b6d4' }
 
 interface NavItem {
   label: string
@@ -16,6 +20,8 @@ interface NavGroup {
 export function AppSidebar() {
   const { state, createProject } = useApp()
   const navigate = useNavigate()
+  const [storageTier] = useState(() => localStorage.getItem('storage_tier') || 'free')
+  const [storageUsed] = useState(() => parseFloat((parseInt(localStorage.getItem('storage_used_bytes') || '0') / 1e9).toFixed(2)))
 
   const unreadMessages = state.messageThreads.reduce((sum, t) =>
     sum + state.directMessages.filter(m => m.threadId === t.id && !m.read).length, 0)
@@ -65,6 +71,7 @@ export function AppSidebar() {
       title: 'Library',
       items: [
         { label: 'References', path: '/app/references' },
+        { label: 'Storage', path: '/app/storage' },
       ],
     },
     {
@@ -201,6 +208,29 @@ export function AppSidebar() {
           <span className="text-[10px] text-zinc-600">Clients</span>
           <span className="text-[10px] font-mono text-zinc-500">{activeClients}</span>
         </div>
+
+        {/* Storage bar */}
+        <NavLink to="/app/storage" className="block mb-3 group">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest group-hover:text-zinc-400 transition-colors">Storage</span>
+            <span className="text-[9px] font-mono" style={{ color: TIER_COLOR[storageTier] }}>
+              {storageTier.charAt(0).toUpperCase() + storageTier.slice(1)}
+            </span>
+          </div>
+          <div className="h-0.5 rounded-full bg-[#1e1e21] overflow-hidden">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${Math.min((storageUsed / TIER_STORAGE[storageTier]) * 100, 100)}%`,
+                background: TIER_COLOR[storageTier],
+              }}
+            />
+          </div>
+          <p className="text-[9px] font-mono text-zinc-700 mt-0.5">
+            {storageUsed} / {TIER_STORAGE[storageTier]} GB
+          </p>
+        </NavLink>
+
         <div className="flex items-center gap-3">
           <NavLink to="/discover" className="text-[10px] text-zinc-600 hover:text-zinc-300 transition-colors">
             Discover
