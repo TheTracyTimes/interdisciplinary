@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { checkoutStorageTier, openBillingPortal } from '../../lib/stripe'
 
 const TIERS = [
   {
@@ -71,10 +72,21 @@ export function StoragePage() {
   const totalGB = tier.storage
   const usedPct = Math.min((usedGB / totalGB) * 100, 100)
 
-  function selectTier(id: string) {
-    setCurrentTier(id)
-    localStorage.setItem(STORAGE_KEY, id)
-    setConfirming(null)
+  async function selectTier(id: string) {
+    if (id === 'free') {
+      // Downgrade goes through billing portal
+      const customerId = localStorage.getItem('stripe_customer_id')
+      if (customerId) { await openBillingPortal(customerId); return }
+    }
+    const userId = localStorage.getItem('user_id') ?? 'local'
+    try {
+      await checkoutStorageTier(id as 'pro' | 'studio', userId)
+    } catch {
+      // Fallback to local state during development (no Stripe keys)
+      setCurrentTier(id)
+      localStorage.setItem(STORAGE_KEY, id)
+      setConfirming(null)
+    }
   }
 
   return (
