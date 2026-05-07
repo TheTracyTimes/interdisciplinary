@@ -71,29 +71,49 @@ export function ProfilePage() {
           )}
         </div>
 
-        {/* Avatar color */}
-        <div className="rounded-xl border border-white/8 p-4" style={{ background: '#141416' }}>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Avatar Color</p>
+        {/* Avatar */}
+        <div className="rounded-xl border border-white/8 p-4 space-y-4" style={{ background: '#141416' }}>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Profile Picture</p>
           <div className="flex items-center gap-4">
-            <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-black text-white shrink-0"
-              style={{ background: form.avatarColor }}
-            >
-              {(form.displayName || 'P').charAt(0).toUpperCase()}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {AVATAR_COLORS.map(c => (
-                <button
-                  key={c}
-                  onClick={() => setForm(f => ({ ...f, avatarColor: c }))}
-                  className="w-7 h-7 rounded-lg border-2 transition-all"
-                  style={{
-                    background: c,
-                    borderColor: form.avatarColor === c ? 'white' : 'transparent',
-                    transform: form.avatarColor === c ? 'scale(1.15)' : 'scale(1)',
-                  }}
-                />
-              ))}
+            {/* Preview */}
+            {form.avatarUrl ? (
+              <img
+                src={form.avatarUrl}
+                alt="avatar preview"
+                className="w-14 h-14 rounded-xl object-cover border-2 border-white/20 shrink-0"
+                style={{ objectPosition: 'top center' }}
+                onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+              />
+            ) : (
+              <div
+                className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-black text-white shrink-0"
+                style={{ background: form.avatarColor }}
+              >
+                {(form.displayName || 'P').charAt(0).toUpperCase()}
+              </div>
+            )}
+            <div className="flex-1 space-y-2">
+              <Input
+                label="Photo URL"
+                placeholder="https://... (paste a direct image link)"
+                value={(form as any).avatarUrl || ''}
+                onChange={e => setForm(f => ({ ...f, avatarUrl: e.target.value }))}
+              />
+              <p className="text-[10px] text-slate-600">Or choose an avatar color:</p>
+              <div className="flex flex-wrap gap-2">
+                {AVATAR_COLORS.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => setForm(f => ({ ...f, avatarColor: c, avatarUrl: '' }))}
+                    className="w-6 h-6 rounded-lg border-2 transition-all"
+                    style={{
+                      background: c,
+                      borderColor: !form.avatarUrl && form.avatarColor === c ? 'white' : 'transparent',
+                      transform: !form.avatarUrl && form.avatarColor === c ? 'scale(1.15)' : 'scale(1)',
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

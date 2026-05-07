@@ -392,6 +392,7 @@ export interface ProducerProfile {
   location: string
   specialties: string[]
   avatarColor: string
+  avatarUrl: string
   instagramUrl: string
   websiteUrl: string
   youtubeUrl: string

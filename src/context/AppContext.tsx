@@ -78,6 +78,7 @@ const defaultProducerProfile: ProducerProfile = {
   location: '',
   specialties: [],
   avatarColor: '#6272f3',
+  avatarUrl: '',
   instagramUrl: '',
   websiteUrl: '',
   youtubeUrl: '',
