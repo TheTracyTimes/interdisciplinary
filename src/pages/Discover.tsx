@@ -64,7 +64,7 @@ export function Discover() {
       userProfile.specialties.some(s => s.toLowerCase().includes(search.toLowerCase()))) &&
     (!location || (userProfile.location || '').toLowerCase().includes(location.toLowerCase()))
 
-  const sampleCards = SAMPLE_PROFILES.filter(p => p.handle !== 'interdisciplinary').filter(p => {
+  const sampleCards = SAMPLE_PROFILES.filter(p => p.handle !== 'theeagleandtheblackbird').filter(p => {
     const matchFilter = filter === 'All' || p.specialties.includes(filter)
     const matchSearch =
       !search ||

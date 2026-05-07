@@ -48,8 +48,8 @@ export interface SamplePost {
 export const SAMPLE_PROFILES: SampleProfile[] = [
   // ─── Platform Account ────────────────────────────────────────────────────────
   {
-    handle: 'interdisciplinary',
-    displayName: 'Interdisciplinary',
+    handle: 'theeagleandtheblackbird',
+    displayName: 'The Eagle & The Blackbird',
     bio: 'The Studio OS built for film producers and musicians — and everyone who works at the intersection of both. Script, score, storyboard, schedule, invoice, and distribute from one workspace.',
     location: 'Everywhere',
     specialties: ['Film Direction', 'Music Production', 'Documentary', 'Commercial'],
@@ -296,8 +296,8 @@ export const SAMPLE_POSTS: SamplePost[] = [
   {
     id: 'sample_ix_001',
     _isSample: true,
-    _authorHandle: 'interdisciplinary',
-    _authorName: 'Interdisciplinary',
+    _authorHandle: 'theeagleandtheblackbird',
+    _authorName: 'The Eagle & The Blackbird',
     _authorAvatarUrl: '',
     _authorAvatarColor: '#6272f3',
     _authorDiscipline: 'Platform',
